@@ -27,7 +27,13 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      ["expo-router"],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "My_Snapchat accesses your gallery to let you share images with your friends."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
