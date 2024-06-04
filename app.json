@@ -33,6 +33,15 @@
         {
           "photosPermission": "My_Snapchat accesses your gallery to let you share images with your friends."
         }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow My_Snapchat to access your camera",
+          "microphonePermission": "Allow My_Snapchat to access your microphone",
+          "savePhotosPermissions": "Allow My_Snapchat to save photos on your phone",
+          "recordAudioAndroid": true
+        }
       ]
     ],
     "experiments": {
