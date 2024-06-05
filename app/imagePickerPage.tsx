@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { Button, Image, View, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { Link } from 'expo-router';
+import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView';
+import listUsers from './listUsers'
 
 export default function ImagePickerExample() {
   const [image, setImage] = useState(null);
@@ -20,13 +24,16 @@ export default function ImagePickerExample() {
   };
 
   return (
-    <View style={styles.container}>
+    <ThemedView style={styles.container}>
       <Button title="Pick an image from camera roll" onPress={pickImage} />
+      <Link href={listUsers}>
+        <ThemedText>See users</ThemedText>
+      </Link>
       {image && <Image 
                   source={{ uri: image }} 
                   style={styles.image}
                   resizeMode='contain' />}
-    </View>
+    </ThemedView>
   );
 }
 

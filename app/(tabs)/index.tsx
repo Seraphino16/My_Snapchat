@@ -21,6 +21,9 @@ export default function HomeScreen() {
         <HelloWave />
       </ThemedView>
       <Link href='/imagePickerPage' style={{ color: "white"}}>Image Picker</Link>
+      <Link href='/listUsers'>
+        <ThemedText>See users</ThemedText>
+      </Link>
 
       
     </ParallaxScrollView>
