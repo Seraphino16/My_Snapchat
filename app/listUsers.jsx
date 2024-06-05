@@ -8,7 +8,7 @@ export default function ListUsers () {
     const[user, setUser] = useState(null);
 
     useEffect(() => {
-        fetch('https://snapchat.epicode.eu/user', {
+        fetch('https://snapchat.epidoc.eu/user', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -19,13 +19,11 @@ export default function ListUsers () {
             }),
         })
         .then((response) => {
-            if(response.ok) {
-                return response.json();
-            }
+            return response.json();
         })
         .then((data) => {
-            console.log(data);
-            setUser(data);
+            // console.log(data);
+            setUser(data.data);
         })
         .catch((error) => {
             console.log(error);
@@ -33,23 +31,32 @@ export default function ListUsers () {
     }, [])
 
 
-    // useEffect(() => {
-    //     fetch('https://snapchat.epidoc.eu/user', {
-    //         method: 'get',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Authorization': 'bearer' + user.token
-    //         }
-    //     })
-    //     .then((response) => {
-    //         if(response.ok) {
-    //             return response.json();
-    //         }
-    //     })
-    //     .then((data) => {
-    //         console.log(data);
-    //     })
-    // }, [user]);
+    useEffect(() => {
+        console.log('User 2cd useEffect');
+        console.log(user);
+        if(user && user.token) {
+
+            console.log(user.token)
+            fetch('https://snapchat.epidoc.eu/user', {
+                method: 'get',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': 'bearer ' + user.token
+                }
+            })
+            .then((response) => {
+                console.log('knkjnkjnjkn');
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+        }
+    }, [user]);
 
     return(
         <ThemedView>
