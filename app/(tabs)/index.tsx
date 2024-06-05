@@ -20,7 +20,7 @@ export default function HomeScreen() {
         <ThemedText type="title">Welcome!</ThemedText>
         <HelloWave />
       </ThemedView>
-      <Link href='/imagePickerPage' style={{ color: "white"}}>Image Picker</Link>
+      <Link replace href='/imagePickerPage' style={{ color: "white"}}>Image Picker</Link>
       <Link href='/listUsers'>
         <ThemedText>See users</ThemedText>
       </Link>

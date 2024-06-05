@@ -1,6 +1,26 @@
 import { useEffect, useState } from 'react';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
+import { View, FlatList, Image, StyleSheet } from 'react-native';
+import { TouchableHighlight } from 'react-native-gesture-handler';
+
+function UserItem ({ user }) {
+
+    // console.log(user.profilePicture);
+    return(
+        <ThemedView style={styles.userIem}>
+            {/* // <TouchableHighlight> */}
+                {user.profilePicture.length > 0 &&
+                    <Image
+                    source={{ uri: user.profilePicture }}
+                    resizeMode='contain'
+                    style={styles.image} />
+                }
+                <ThemedText>{user.username}</ThemedText>
+            {/* // </TouchableHighlight> */}
+        </ThemedView>
+    )
+}
 
 export default function ListUsers () {
 
@@ -32,11 +52,9 @@ export default function ListUsers () {
 
 
     useEffect(() => {
-        console.log('User 2cd useEffect');
-        console.log(user);
-        if(user && user.token) {
 
-            console.log(user.token)
+        // console.log(user);
+        if(user && user.token) {
             fetch('https://snapchat.epidoc.eu/user', {
                 method: 'get',
                 headers: {
@@ -45,11 +63,12 @@ export default function ListUsers () {
                 }
             })
             .then((response) => {
-                console.log('knkjnkjnjkn');
                 return response.json();
             })
             .then((data) => {
-                console.log(data);
+                // console.log('Data to put in listUsers', data);
+                setListUsers(data.data);
+                // console.log('List user after fetch', listUsers);
 
             })
             .catch((error) => {
@@ -59,8 +78,38 @@ export default function ListUsers () {
     }, [user]);
 
     return(
-        <ThemedView>
+        <ThemedView styles={styles.container}>
+            {!listUsers ? (
             <ThemedText>See the console to see users</ThemedText>
+            ) : (
+                <FlatList
+                    data={listUsers}
+                    renderItem={({ item }) => <UserItem user={item} />}
+                    keyExtractor={item => item._id}
+                />
+            )}
         </ThemedView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        padding: 16,
+    },
+    image: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        marginRight: 16,
+    },
+    userIem: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'start',
+        width: '100%',
+        padding: 20,
+        // borderWidth: 1,
+        // borderColor: 'black',
+    }
+})

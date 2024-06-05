@@ -12,11 +12,10 @@ export default function ImagePickerExample() {
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 1,
+      base64: true,
     });
-
-    console.log(result);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
@@ -25,14 +24,21 @@ export default function ImagePickerExample() {
 
   return (
     <ThemedView style={styles.container}>
-      <Button title="Pick an image from camera roll" onPress={pickImage} />
-      <Link href={listUsers}>
-        <ThemedText>See users</ThemedText>
-      </Link>
-      {image && <Image 
-                  source={{ uri: image }} 
-                  style={styles.image}
-                  resizeMode='contain' />}
+      {image ? (
+          <>
+            <Image
+            source={{ uri: image }}
+            style={styles.image}
+            resizeMode='contain' />
+            <Button title="Choose an other image" onPress={pickImage} />
+            <Link replace href='/listUsers'>
+              <ThemedText>SEND</ThemedText>
+            </Link>  
+          </>
+      ) : (
+        <Button title="Pick an image from camera roll" onPress={pickImage} />
+      )}
+      
     </ThemedView>
   );
 }
