@@ -1,24 +1,28 @@
 import { useEffect, useState } from 'react';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
-import { View, FlatList, Image, StyleSheet } from 'react-native';
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import { FlatList, Image, StyleSheet, Pressable, Text } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-function UserItem ({ user }) {
+function UserItem ({ user, onSelect, isSelected }) {
 
-    // console.log(user.profilePicture);
     return(
-        <ThemedView style={styles.userIem}>
-            {/* // <TouchableHighlight> */}
-                {user.profilePicture.length > 0 &&
-                    <Image
-                    source={{ uri: user.profilePicture }}
-                    resizeMode='contain'
-                    style={styles.image} />
-                }
-                <ThemedText>{user.username}</ThemedText>
-            {/* // </TouchableHighlight> */}
-        </ThemedView>
+        <Pressable onPress={() => onSelect(user)}>
+            <ThemedView style={styles.userItem} >
+                <ThemedView style={styles.userInfo}>            
+                    {user.profilePicture.length > 0 &&
+                        <Image
+                        source={{ uri: user.profilePicture }}
+                        resizeMode='contain'
+                        style={styles.image} />
+                    }
+                    <ThemedText>{user.username}</ThemedText>
+                </ThemedView>
+                {isSelected && (
+                    <Icon name="check-circle" size={30} color='green' />
+                )}
+            </ThemedView>
+        </Pressable>
     )
 }
 
@@ -26,6 +30,8 @@ export default function ListUsers () {
 
     const [listUsers, setListUsers] = useState(null);
     const[user, setUser] = useState(null);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [isPressed, setIsPressed] = useState(false);
 
     useEffect(() => {
         fetch('https://snapchat.epidoc.eu/user', {
@@ -42,7 +48,6 @@ export default function ListUsers () {
             return response.json();
         })
         .then((data) => {
-            // console.log(data);
             setUser(data.data);
         })
         .catch((error) => {
@@ -53,7 +58,6 @@ export default function ListUsers () {
 
     useEffect(() => {
 
-        // console.log(user);
         if(user && user.token) {
             fetch('https://snapchat.epidoc.eu/user', {
                 method: 'get',
@@ -66,16 +70,17 @@ export default function ListUsers () {
                 return response.json();
             })
             .then((data) => {
-                // console.log('Data to put in listUsers', data);
                 setListUsers(data.data);
-                // console.log('List user after fetch', listUsers);
-
             })
             .catch((error) => {
                 console.error(error);
             })
         }
     }, [user]);
+
+    const handleSend = function () {
+        console.log(selectedUser);
+    }
 
     return(
         <ThemedView styles={styles.container}>
@@ -84,9 +89,24 @@ export default function ListUsers () {
             ) : (
                 <FlatList
                     data={listUsers}
-                    renderItem={({ item }) => <UserItem user={item} />}
+                    renderItem={({ item }) => (
+                        <UserItem 
+                            user={item}
+                            onSelect={setSelectedUser}
+                            isSelected={selectedUser?._id === item._id} />
+                    )}
                     keyExtractor={item => item._id}
                 />
+            )}
+            { selectedUser && (
+                <Pressable
+                    style={[styles.button, isPressed && styles.buttonPressed]}
+                    onPressIn={() => setIsPressed(true)}
+                    onPressOut={() => setIsPressed(false)}
+                    onPress={handleSend}
+                >
+                    <Text>SEND</Text>
+                </Pressable>
             )}
         </ThemedView>
     )
@@ -102,14 +122,38 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         marginRight: 16,
     },
-    userIem: {
+    userItem: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+        height: 50,
+        paddingHorizontal: 20,
+    },
+    userInfo: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'start',
-        width: '100%',
-        padding: 20,
-        // borderWidth: 1,
-        // borderColor: 'black',
+    },
+    button: {
+        position: 'absolute',
+        bottom: 80,
+        left: '50%',
+        transform: [{ translateX: -50 }],
+        zIndex: 1,
+        backgroundColor: '#13bceb',
+        width: 100,
+        paddingVertical: 12,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 20,
+        transitionDuration: 200,
+        transitionProperty: 'background-color',
+        transitoinTimingFunction: 'ease-in-out'
+    },
+    buttonPressed: {
+        backgroundColor: '#1c9abd'
     }
 })
