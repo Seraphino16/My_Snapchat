@@ -3,6 +3,7 @@ import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import { FlatList, Image, StyleSheet, Pressable, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useRoute } from '@react-navigation/native';
 
 function UserItem ({ user, onSelect, isSelected }) {
 
@@ -32,6 +33,12 @@ export default function ListUsers () {
     const[user, setUser] = useState(null);
     const [selectedUser, setSelectedUser] = useState(null);
     const [isPressed, setIsPressed] = useState(false);
+    const route = useRoute();
+    const { image } = route.params;
+
+    if(image) {
+        console.log(image);
+    }
 
     useEffect(() => {
         fetch('https://snapchat.epidoc.eu/user', {
@@ -105,7 +112,8 @@ export default function ListUsers () {
                     onPressOut={() => setIsPressed(false)}
                     onPress={handleSend}
                 >
-                    <Text>SEND</Text>
+                    <Text style={styles.buttonText}>SEND</Text>
+                    <Icon name='paper-plane' size={20} color='white' />
                 </Pressable>
             )}
         </ThemedView>
@@ -139,7 +147,7 @@ const styles = StyleSheet.create({
     },
     button: {
         position: 'absolute',
-        bottom: 80,
+        bottom: 60,
         left: '50%',
         transform: [{ translateX: -50 }],
         zIndex: 1,
@@ -151,9 +159,15 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         transitionDuration: 200,
         transitionProperty: 'background-color',
-        transitoinTimingFunction: 'ease-in-out'
+        transitoinTimingFunction: 'ease-in-out',
+        display: 'flex',
+        flexDirection: 'row',
     },
     buttonPressed: {
         backgroundColor: '#1c9abd'
+    },
+    buttonText: {
+        color: 'white',
+        marginRight: 12,
     }
 })
