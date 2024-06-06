@@ -36,10 +36,6 @@ export default function ListUsers () {
     const route = useRoute();
     const { image } = route.params;
 
-    if(image) {
-        console.log(image);
-    }
-
     useEffect(() => {
         fetch('https://snapchat.epidoc.eu/user', {
             method: 'PUT',
@@ -52,6 +48,7 @@ export default function ListUsers () {
             }),
         })
         .then((response) => {
+            console.log(response);
             return response.json();
         })
         .then((data) => {
@@ -86,7 +83,25 @@ export default function ListUsers () {
     }, [user]);
 
     const handleSend = function () {
-        console.log(selectedUser);
+        fetch('https://snapchat.epidoc.eu/user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': 'bearer ' + user.token
+                },
+                body: JSON.stringify({
+                    to: selectedUser._id,
+                    image: image.base64,
+                    duration: 5,
+                })
+            })
+            .then((response) => { 
+                // return response.text()
+                return response.json() 
+            })
+            .then((data) => { console.log(data) })
+            .catch((error) => { console.error(error) });
+
     }
 
     return(
