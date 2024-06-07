@@ -7,7 +7,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import logo from "../../assets/images/logosnap.png";
 
-export default function IndexScreen() {
+export default function HomeScreen() {
     const navigation = useNavigation();
 
     return (
@@ -35,26 +35,16 @@ export default function IndexScreen() {
             >
                 <ThemedView style={styles.titleContainer}>
                     <View>
-                        <ThemedText type="title">Welcome !</ThemedText>
+                        <ThemedText type="title">Welcome to the home page !</ThemedText>
                     </View>
                     <HelloWave />
                 </ThemedView>
                 <View>
                     <ThemedText>
                         {" "}
-                        Sign up and never let them know your next move !{" "}
+                        This is the home page !{" "}
                     </ThemedText>
                 </View>
-                <ThemedView style={styles.stepContainer}>
-                    <Button
-                        title="Sign up"
-                        onPress={() => navigation.navigate("SignUp")}
-                    />
-                    <Button
-                        title="Login"
-                        onPress={() => navigation.navigate("Login")}
-                    />
-                </ThemedView>
             </View>
         </ParallaxScrollView>
     );

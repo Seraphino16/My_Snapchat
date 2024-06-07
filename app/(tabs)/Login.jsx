@@ -29,7 +29,7 @@ export default function Login() {
         })
             .then((response) => response.json())
             .then((data) => {
-                navigation.navigate('index');
+                navigation.navigate('Home');
                 console.log(data);            })
             .catch((error) => {
                 console.error("Erreur:", error);
