@@ -6,6 +6,7 @@ import logo from "../../assets/images/logosnap.png";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter } from "expo-router";
 
 
 export default function Login() {
@@ -14,12 +15,14 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const bootstrapStyleSheet = new BootstrapStyleSheet();
     const { s, c } = bootstrapStyleSheet;
+    const router = useRouter();
 
     const handleLogin = () => {
         fetch("https://snapchat.epidoc.eu/user", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlcmFwaGluLmJlbm9pdEBlcGl0ZWNoLmV1IiwiaWF0IjoxNzE3NzYzMDg5fQ.yVGQmbarWgv25YxWcwl01igKET7stSAfJ4eRvmaTvrU"
             },
             body: JSON.stringify({
                 email: email,
@@ -28,11 +31,15 @@ export default function Login() {
         })
             .then((response) => response.json())
             .then(async (data) => {
-                navigation.navigate('index');
+                
                 try {
                     // Assure que le token est dans l'objet data
-                    await AsyncStorage.setItem('@token', data.token); 
-                    console.log(data);
+                    if(data.data.token) {
+                        await AsyncStorage.setItem('@token', data.data.token); 
+                        router.replace('(tabs)');
+                    } else {
+                        console.log('Error with connexion');
+                    }
                 } catch (e) {
                     console.error("Erreur de sauvegarde du token:", e);
                 }

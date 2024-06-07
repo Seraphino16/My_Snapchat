@@ -16,5 +16,5 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "global.d.ts"
-, "app/+not-found.jsx", "app/+html.jsx", "app/_layout.jsx", "app/(tabs)/SignUp.jsx", "app/(tabs)/Login.jsx", "app/(tabs)/index.jsx", "app/(tabs)/explore.jsx", "app/(tabs)/_layout.jsx"  ]
+, "app/+not-found.jsx", "app/+html.jsx", "app/_layout.jsx", "app/(login)/signup.jsx", "app/(login)/login.jsx", "app/(login)/index.jsx", "app/(tabs)/explore.jsx", "app/(tabs)/_layout.jsx"  ]
 }
