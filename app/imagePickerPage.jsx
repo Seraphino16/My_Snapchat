@@ -7,11 +7,13 @@ import { ThemedView } from '@/components/ThemedView';
 import { useNavigation } from '@react-navigation/native';
 import RNPickerSelect from 'react-native-picker-select';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useThemeColor } from '@/hooks/useThemeColor';
 
 export default function ImagePickerExample() {
   const [image, setImage] = useState(null);
   const navigation = useNavigation();
   const [selectedTime, setSelectedTime] = useState(5);
+  const themeColor = useThemeColor({ light: 'black', dark: 'white'});
 
   if(selectedTime) {
     // console.log(selectedTime);
@@ -71,7 +73,7 @@ export default function ImagePickerExample() {
               placeholder={{}}
               value={selectedTime}
             >
-              <Icon name='clock-o' size={30} color='white' />
+              <Icon name='clock-o' size={40} color={themeColor} />
             </RNPickerSelect>
             
             <Button title='Send to one user'  onPress={() => navigateToListUsers(image, selectedTime)} />
