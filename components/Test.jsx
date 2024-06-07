@@ -1,40 +1,36 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet,TextInput, Button, Image } from "react-native";
+import { View, Text, StyleSheet, TextInput, Button, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import logo from "../../assets/images/logosnap.png";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 
-export default function SignUp() {
+export default function Test() {
     const navigation = useNavigation();
 
-    
-    const [username, setUsername] = useState("");
-    const [profilePicture, setProfilePicture] = useState("");
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const bootstrapStyleSheet = new BootstrapStyleSheet();
     const { s, c } = bootstrapStyleSheet;
 
-    const handleSignUp = () => {
+    const handleLogin = () => {
         fetch("https://snapchat.epidoc.eu/user", {
-            method: "POST",
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                username: username,
-                profilePicture: profilePicture,
+              
                 email: email,
                 password: password,
             }),
         })
             .then((response) => response.json())
             .then((data) => {
-                navigation.navigate('Login');
-                console.log(data);
-            })
+                navigation.navigate('index');
+                console.log(data);            })
             .catch((error) => {
                 console.error("Erreur:", error);
             });
@@ -42,9 +38,9 @@ export default function SignUp() {
 
     return (
         <View style={[s.container, { justifyContent: "center", flex: 1 }]}>
-          <ThemedView style={[styles.titleContainer, { backgroundColor: 'transparent' }]}>
+            <ThemedView style={[styles.titleContainer, { backgroundColor: 'transparent' }]}>
                 <View>
-                    <ThemedText type="title">Sign up !</ThemedText>
+                    <ThemedText type="title">Login !</ThemedText>
                 </View>
             </ThemedView>
             <View
@@ -53,37 +49,13 @@ export default function SignUp() {
                     {
                         alignItems: "center",
                         justifyContent: "center",
-                        flex: 0.35,
+                        flex: 0.25,
                     },
                 ]}
             >
                 <Image source={logo} style={[{ width: 80, height: 80 }]} />
             </View>
-            <Text style={[s.text, { color: c.danger }]}>Username:</Text>
-            <TextInput
-                style={[
-                    s.border,
-                    s.p1,
-                    { minWidth: "80%", height: 40, backgroundColor: "white" },
-                ]}
-                value={username}
-                onChangeText={setUsername}
-            />
-
-            <Text style={[s.text, s.mt4, { color: c.danger }]}>
-                Profile Picture:
-            </Text>
-            <TextInput
-                style={[
-                    s.border,
-                    s.p1,
-                    { minWidth: "80%", height: 40, backgroundColor: "white" },
-                ]}
-                value={profilePicture}
-                onChangeText={setProfilePicture}
-            />
-
-            <Text style={[s.text, s.mt4, { color: c.danger }]}>Email:</Text>
+            <Text style={[s.text, { color: c.danger }]}>Hello, Bienvenu sur la page de test:</Text>
             <TextInput
                 style={[
                     s.border,
@@ -93,7 +65,7 @@ export default function SignUp() {
                 value={email}
                 onChangeText={setEmail}
             />
-
+    
             <Text style={[s.text, s.mt4, { color: c.danger }]}>Password:</Text>
             <TextInput
                 style={[
@@ -105,18 +77,17 @@ export default function SignUp() {
                 onChangeText={setPassword}
                 secureTextEntry
             />
-
+    
             <View style={s.mt4}>
-                <Button title="SignUp" onPress={handleSignUp} />
+                <Button title="Login" onPress={handleLogin} />
             </View>
         </View>
     );
-}
-
-const styles = StyleSheet.create({
-  titleContainer: {
-      flexDirection: "column",
-      alignItems: "center",
-      gap: 8,
-  }
-});
+    }
+    const styles = StyleSheet.create({
+        titleContainer: {
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 8,
+        }
+    });
