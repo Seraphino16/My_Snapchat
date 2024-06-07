@@ -35,13 +35,24 @@ export default function HomeScreen() {
     return (
         <View style={styles.container}>
             <CameraView style={styles.camera} facing={facing}>
+                <View style={styles.lensButtonContainer}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        // onPress={}
+                    >
+                        <Image
+                            style={styles.lensIcon}
+                            source={require("@/assets/images/camera-lens.png")}
+                        />
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.flipButtonContainer}>
                     <TouchableOpacity
                         style={styles.button}
                         onPress={toggleCameraFacing}
                     >
                         <Image
-                            style={styles.icon}
+                            style={styles.flipIcon}
                             source={require("@/assets/images/flip.png")}
                         />
                     </TouchableOpacity>
@@ -66,6 +77,13 @@ const styles = StyleSheet.create({
         backgroundColor: "transparent",
         left: 240,
     },
+    lensButtonContainer: {
+        position: "absolute",
+        bottom: 5,
+        flexDirection: "row",
+        backgroundColor: "transparent",
+        right: 140,
+    },
     button: {
         alignSelf: "flex-end",
         alignItems: "center",
@@ -75,10 +93,16 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "white",
     },
-    icon: {
+    flipIcon: {
         alignItems: "center",
         justifyContent: "center",
-        width: 50,
-        height: 50,
+        width: 45,
+        height: 45,
+    },
+    lensIcon: {
+        alignItems: "center",
+        justifyContent: "center",
+        width: 100,
+        height: 100,
     },
 });
