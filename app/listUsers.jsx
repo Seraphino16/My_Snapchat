@@ -45,6 +45,7 @@ export default function ListUsers () {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlcmFwaGluLmJlbm9pdEBlcGl0ZWNoLmV1IiwiaWF0IjoxNzE3NzYzMDg5fQ.yVGQmbarWgv25YxWcwl01igKET7stSAfJ4eRvmaTvrU',
             },
             body: JSON.stringify({
                 email: 'seraphin@gmail.com',
@@ -55,6 +56,7 @@ export default function ListUsers () {
             return response.json();
         })
         .then((data) => {
+            console.log(data)
             setUser(data.data);
         })
         .catch((error) => {
@@ -70,6 +72,7 @@ export default function ListUsers () {
                 method: 'get',
                 headers: {
                     'Content-Type': 'application/json',
+                    'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlcmFwaGluLmJlbm9pdEBlcGl0ZWNoLmV1IiwiaWF0IjoxNzE3NzYzMDg5fQ.yVGQmbarWgv25YxWcwl01igKET7stSAfJ4eRvmaTvrU',
                     'authorization': 'bearer ' + user.token
                 }
             })
@@ -94,6 +97,7 @@ export default function ListUsers () {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlcmFwaGluLmJlbm9pdEBlcGl0ZWNoLmV1IiwiaWF0IjoxNzE3NzYzMDg5fQ.yVGQmbarWgv25YxWcwl01igKET7stSAfJ4eRvmaTvrU',
                     'authorization': 'bearer ' + user.token
                 },
                 body: JSON.stringify({
