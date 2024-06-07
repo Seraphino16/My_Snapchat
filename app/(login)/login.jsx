@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput, Button, Image } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { Link, useNavigation } from "@react-navigation/native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import logo from "../../assets/images/logosnap.png";
 import { ThemedText } from "@/components/ThemedText";
@@ -97,13 +97,19 @@ export default function Login() {
             <View style={s.mt4}>
                 <Button title="Login" onPress={handleLogin} />
             </View>
+            <Link style={styles.link} to='/(login)/signup' >You don't have an account ? Sign up here</Link>
         </View>
     );
+
     }
     const styles = StyleSheet.create({
         titleContainer: {
             flexDirection: "column",
             alignItems: "center",
             gap: 8,
+        },
+        link: {
+            textAlign: 'center',
+            textDecorationLine: 'underline',
         }
     });
