@@ -57,6 +57,17 @@ export default function HomeScreen() {
                         />
                     </TouchableOpacity>
                 </View>
+                <View style={styles.avatarButtonContainer}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        // onPress={() => navigation.navigate("Profile")}
+                    >
+                        <Image
+                            style={styles.avatarIcon}
+                            source={require("@/assets/images/avatar.png")}
+                        />
+                    </TouchableOpacity>
+                </View>
             </CameraView>
         </View>
     );
@@ -84,6 +95,13 @@ const styles = StyleSheet.create({
         backgroundColor: "transparent",
         right: 140,
     },
+    avatarButtonContainer: {
+        position: "absolute",
+        bottom: 25,
+        flexDirection: "row",
+        backgroundColor: "transparent",
+        right: 20,
+    },
     button: {
         alignSelf: "flex-end",
         alignItems: "center",
@@ -104,5 +122,11 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         width: 100,
         height: 100,
+    },
+    avatarIcon: {
+        alignItems: "center",
+        justifyContent: "center",
+        width: 60,
+        height: 60,
     },
 });
