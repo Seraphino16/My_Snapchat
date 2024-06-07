@@ -24,9 +24,16 @@ export default function ImagePickerExample() {
     });
 
     if (!result.canceled) {
+      // const base64dataURL = `data:image/${result.asset[0].mimeType};base64,${result.base64}`;
       setImage(result.assets[0]);
     }
   };  
+
+  if(image) {
+    image.base64 = `data:${image.mimeType};base64,${image.base64}`;
+    // let str = image.base64.substring(0, 500);
+    // console.log(str);
+  }
 
   return (
     <ThemedView style={styles.container}>

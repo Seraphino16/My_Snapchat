@@ -48,7 +48,6 @@ export default function ListUsers () {
             }),
         })
         .then((response) => {
-            console.log(response);
             return response.json();
         })
         .then((data) => {
@@ -83,7 +82,11 @@ export default function ListUsers () {
     }, [user]);
 
     const handleSend = function () {
-        fetch('https://snapchat.epidoc.eu/user', {
+
+        const str = image.base64.substring(0, 50);
+        console.log(str);
+
+        fetch('https://snapchat.epidoc.eu/snap', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -96,7 +99,6 @@ export default function ListUsers () {
                 })
             })
             .then((response) => { 
-                // return response.text()
                 return response.json() 
             })
             .then((data) => { console.log(data) })
