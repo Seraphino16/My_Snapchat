@@ -107,7 +107,17 @@ export default function ListUsers () {
                 })
             })
             .then((response) => { 
-                return response.json() 
+                const contentType = response.headers.get('content-type');
+
+                if (contentType && contentType.includes('application/json')) {
+                    return response.json();
+                } else if (contentType && contentType.includes('text/html')) {
+                    return response.text();
+                } else {
+                    throw new Error('ContentType  not supported');
+                }
+
+                
             })
             .then((data) => { console.log(data) })
             .catch((error) => { console.error(error) });
