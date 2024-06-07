@@ -36,6 +36,7 @@ export default function Login() {
                     // Assure que le token est dans l'objet data
                     if(data.data.token) {
                         await AsyncStorage.setItem('@token', data.data.token); 
+                        console.log('Connexion OK');
                         router.replace('(tabs)');
                     } else {
                         console.log('Error with connexion');

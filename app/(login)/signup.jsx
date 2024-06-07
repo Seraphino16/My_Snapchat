@@ -5,6 +5,7 @@ import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import logo from "../../assets/images/logosnap.png";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { useRouter } from "expo-router";
 
 export default function SignUp() {
     const navigation = useNavigation();
@@ -16,12 +17,14 @@ export default function SignUp() {
     const [password, setPassword] = useState("");
     const bootstrapStyleSheet = new BootstrapStyleSheet();
     const { s, c } = bootstrapStyleSheet;
+    const router = useRouter();
 
     const handleSignUp = () => {
         fetch("https://snapchat.epidoc.eu/user", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlcmFwaGluLmJlbm9pdEBlcGl0ZWNoLmV1IiwiaWF0IjoxNzE3NzYzMDg5fQ.yVGQmbarWgv25YxWcwl01igKET7stSAfJ4eRvmaTvrU"
             },
             body: JSON.stringify({
                 username: username,
@@ -32,7 +35,9 @@ export default function SignUp() {
         })
             .then((response) => response.json())
             .then((data) => {
-                navigation.navigate('Login');
+                if(data._id) {
+                    router.replace('(login)/login')
+                }
                 console.log(data);
             })
             .catch((error) => {
