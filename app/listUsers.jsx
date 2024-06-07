@@ -4,6 +4,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { FlatList, Image, StyleSheet, Pressable, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useRoute } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 
 function UserItem ({ user, onSelect, isSelected }) {
 
@@ -35,6 +36,7 @@ export default function ListUsers () {
     const [isPressed, setIsPressed] = useState(false);
     const route = useRoute();
     const { image, selectedTime } = route.params;
+    const router = useRouter();
 
     if(image) {
         console.log(image.base64.substring(0, 50));
@@ -119,7 +121,12 @@ export default function ListUsers () {
 
                 
             })
-            .then((data) => { console.log(data) })
+            .then((data) => {
+                console.log(data);
+                if(data.success && data.success == true) {
+                    router.replace('(tabs)');
+                }
+            })
             .catch((error) => { console.error(error) });
 
     }
