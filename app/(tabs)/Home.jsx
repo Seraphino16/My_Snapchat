@@ -68,6 +68,17 @@ export default function HomeScreen() {
                         />
                     </TouchableOpacity>
                 </View>
+                <View style={styles.getSnapButtonContainer}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        // onPress={() => navigation.navigate("GetSnap")}
+                    >
+                        <Image
+                            style={styles.getSnapIcon}
+                            source={require("@/assets/images/get-snap.png")}
+                        />
+                    </TouchableOpacity>
+                </View>
             </CameraView>
         </View>
     );
@@ -102,6 +113,13 @@ const styles = StyleSheet.create({
         backgroundColor: "transparent",
         right: 20,
     },
+    getSnapButtonContainer: {
+        position: "absolute",
+        bottom: 20,
+        flexDirection: "row",
+        backgroundColor: "transparent",
+        left: 20,
+    },
     button: {
         alignSelf: "flex-end",
         alignItems: "center",
@@ -124,6 +142,12 @@ const styles = StyleSheet.create({
         height: 100,
     },
     avatarIcon: {
+        alignItems: "center",
+        justifyContent: "center",
+        width: 60,
+        height: 60,
+    },
+    getSnapIcon: {
         alignItems: "center",
         justifyContent: "center",
         width: 60,
