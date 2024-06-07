@@ -5,11 +5,11 @@ import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import logo from "../../assets/images/logosnap.png";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function Login() {
     const navigation = useNavigation();
-
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const bootstrapStyleSheet = new BootstrapStyleSheet();
@@ -22,19 +22,28 @@ export default function Login() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              
                 email: email,
                 password: password,
             }),
         })
             .then((response) => response.json())
-            .then((data) => {
+            .then(async (data) => {
                 navigation.navigate('index');
-                console.log(data);            })
+                try {
+                    // Assure que le token est dans l'objet data
+                    await AsyncStorage.setItem('@token', data.token); 
+                    console.log(data);
+                } catch (e) {
+                    console.error("Erreur de sauvegarde du token:", e);
+                }
+            })
+
             .catch((error) => {
                 console.error("Erreur:", error);
             });
     };
+
+
 
     return (
         <View style={[s.container, { justifyContent: "center", flex: 1 }]}>
