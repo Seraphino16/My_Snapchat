@@ -34,7 +34,11 @@ export default function ListUsers () {
     const [selectedUser, setSelectedUser] = useState(null);
     const [isPressed, setIsPressed] = useState(false);
     const route = useRoute();
-    const { image } = route.params;
+    const { image, selectedTime } = route.params;
+
+    if(image) {
+        console.log(image.base64.substring(0, 50));
+    }
 
     useEffect(() => {
         fetch('https://snapchat.epidoc.eu/user', {
@@ -95,7 +99,7 @@ export default function ListUsers () {
                 body: JSON.stringify({
                     to: selectedUser._id,
                     image: image.base64,
-                    duration: 5,
+                    duration: selectedTime,
                 })
             })
             .then((response) => { 

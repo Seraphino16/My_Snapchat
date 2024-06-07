@@ -5,14 +5,33 @@ import { Link } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useNavigation } from '@react-navigation/native';
-import ListUsers from './listUsers'
+import RNPickerSelect from 'react-native-picker-select';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function ImagePickerExample() {
   const [image, setImage] = useState(null);
   const navigation = useNavigation();
+  const [selectedTime, setSelectedTime] = useState(5);
+
+  if(selectedTime) {
+    // console.log(selectedTime);
+}
+
+  const timeValues = [
+    { label: '1', value: 1 },
+    { label: '2', value: 2 },
+    { label: '3', value: 3 },
+    { label: '4', value: 4 },
+    { label: '5', value: 5 },
+    { label: '6', value: 6 },
+    { label: '7', value: 7 },
+    { label: '8', value: 8 },
+    { label: '9', value: 9 },
+    { label: '10', value: 10 }
+  ]
 
   const navigateToListUsers = (image) => {
-      navigation.navigate('listUsers', { image });
+      navigation.navigate('listUsers', { image, selectedTime });
   };
 
   const pickImage = async () => {
@@ -24,15 +43,16 @@ export default function ImagePickerExample() {
     });
 
     if (!result.canceled) {
-      // const base64dataURL = `data:image/${result.asset[0].mimeType};base64,${result.base64}`;
       setImage(result.assets[0]);
     }
   };  
 
   if(image) {
-    image.base64 = `data:${image.mimeType};base64,${image.base64}`;
-    // let str = image.base64.substring(0, 500);
-    // console.log(str);
+    if(!image.base64.startsWith('data:image')) {
+      image.base64 = `data:${image.mimeType};base64,${image.base64}`;
+    }
+    
+    console.log(image.base64.substring(0, 50));
   }
 
   return (
@@ -44,10 +64,17 @@ export default function ImagePickerExample() {
             style={styles.image}
             resizeMode='contain' />
             <Button title="Choose an other image" onPress={pickImage} />
-            {/* <Link replace href='/listUsers'>
-              <ThemedText>SEND</ThemedText>
-            </Link>   */}
-            <Button title='Send to one user'  onPress={() => navigateToListUsers(image)} />
+            <RNPickerSelect
+              onValueChange={(value) => setSelectedTime(value)}
+              items={timeValues}
+              darkTheme={true}
+              placeholder={{}}
+              value={selectedTime}
+            >
+              <Icon name='clock-o' size={30} color='white' />
+            </RNPickerSelect>
+            
+            <Button title='Send to one user'  onPress={() => navigateToListUsers(image, selectedTime)} />
           </>
       ) : (
         <Button title="Pick an image from camera roll" onPress={pickImage} />
