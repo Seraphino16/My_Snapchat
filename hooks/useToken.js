@@ -1,9 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRouter } from "expo-router";
 
 // This hook is used to use and transform connection token
 const useToken = () => {
     const [token, setToken] = useState(null);
+    const router = useRouter();
 
     const getToken = useCallback(async () => {
         try {
@@ -29,7 +31,8 @@ const useToken = () => {
         try {
             await AsyncStorage.removeItem('@token');
             setToken(null);
-            console.log('Token removed');
+            console.log('User disconnected');
+            router.replace('(login)');
         } catch (error) {
             console.error('Error with disconnection', error);
         }
