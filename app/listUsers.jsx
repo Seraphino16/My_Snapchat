@@ -5,6 +5,7 @@ import { FlatList, Image, StyleSheet, Pressable, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useRoute } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
+import useToken from '@/hooks/useToken';
 
 function UserItem ({ user, onSelect, isSelected }) {
 
@@ -31,51 +32,30 @@ function UserItem ({ user, onSelect, isSelected }) {
 export default function ListUsers () {
 
     const [listUsers, setListUsers] = useState(null);
-    const[user, setUser] = useState(null);
     const [selectedUser, setSelectedUser] = useState(null);
     const [isPressed, setIsPressed] = useState(false);
     const route = useRoute();
     const { image, selectedTime } = route.params;
     const router = useRouter();
+    const { token } = useToken();
+
+    if(token) {
+        console.log(token);
+    }
 
     if(image) {
         console.log(image.base64.substring(0, 50));
     }
 
     useEffect(() => {
-        fetch('https://snapchat.epidoc.eu/user', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlcmFwaGluLmJlbm9pdEBlcGl0ZWNoLmV1IiwiaWF0IjoxNzE3NzYzMDg5fQ.yVGQmbarWgv25YxWcwl01igKET7stSAfJ4eRvmaTvrU',
-            },
-            body: JSON.stringify({
-                email: 'seraphin@gmail.com',
-                password: 'azerty',
-            }),
-        })
-        .then((response) => {
-            return response.json();
-        })
-        .then((data) => {
-            console.log(data)
-            setUser(data.data);
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-    }, [])
 
-
-    useEffect(() => {
-
-        if(user && user.token) {
+        if(token) {
             fetch('https://snapchat.epidoc.eu/user', {
                 method: 'get',
                 headers: {
                     'Content-Type': 'application/json',
                     'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlcmFwaGluLmJlbm9pdEBlcGl0ZWNoLmV1IiwiaWF0IjoxNzE3NzYzMDg5fQ.yVGQmbarWgv25YxWcwl01igKET7stSAfJ4eRvmaTvrU',
-                    'authorization': 'bearer ' + user.token
+                    'authorization': 'bearer ' + token
                 }
             })
             .then((response) => {
@@ -87,8 +67,10 @@ export default function ListUsers () {
             .catch((error) => {
                 console.error(error);
             })
+        } else {
+            console.log(token);
         }
-    }, [user]);
+    }, [token]);
 
     const handleSend = function () {
 
@@ -100,7 +82,7 @@ export default function ListUsers () {
                 headers: {
                     'Content-Type': 'application/json',
                     'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlcmFwaGluLmJlbm9pdEBlcGl0ZWNoLmV1IiwiaWF0IjoxNzE3NzYzMDg5fQ.yVGQmbarWgv25YxWcwl01igKET7stSAfJ4eRvmaTvrU',
-                    'authorization': 'bearer ' + user.token
+                    'authorization': 'bearer ' + token
                 },
                 body: JSON.stringify({
                     to: selectedUser._id,
