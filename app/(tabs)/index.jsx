@@ -1,73 +1,132 @@
-import { Image, StyleSheet, Platform, View } from "react-native";
-import { Button } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { HelloWave } from "@/components/HelloWave";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import logo from "../../assets/images/logosnap.png";
+import { CameraView, useCameraPermissions } from "expo-camera";
+import { useState } from "react";
+import {
+    Button,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+    Image,
+} from "react-native";
 
-export default function IndexScreen() {
-    const navigation = useNavigation();
+export default function HomeScreen() {
+    const [facing, setFacing] = useState("back");
+    const [permission, requestPermission] = useCameraPermissions();
+
+    if (!permission) {
+        return <View />;
+    }
+
+    if (!permission.granted) {
+        return (
+            <View style={styles.container}>
+                <Text style={{ textAlign: "center" }}>
+                    We need your permission to show the camera
+                </Text>
+                <Button onPress={requestPermission} title="grant permission" />
+            </View>
+        );
+    }
+
+    function toggleCameraFacing() {
+        setFacing((current) => (current === "back" ? "front" : "back"));
+    }
 
     return (
-        <ParallaxScrollView
-            headerBackgroundColor={{ light: "yellow", dark: "#1D3D47" }}
-            headerImage={
-                <View>
-                    <Image source={logo} style={{ width: 80, height: 80, top: 40, alignSelf: 'center' }} />
-                    <Image
-                        source={require("@/assets/images/devilbg.png")}
-                        style={{
-                            width: "100%",
-                            height: 100,
-                            top: "190%",
-                            alignSelf: 'center',
-                            resizeMode: "cover",
-                            position: "absolute",
-                        }}
-                    />
+        <View style={styles.container}>
+            <CameraView style={styles.camera} facing={facing}>
+                <View style={styles.lensButtonContainer}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        // onPress={}
+                    >
+                        <Image
+                            style={styles.lensIcon}
+                            source={require("@/assets/images/camera-lens.png")}
+                        />
+                    </TouchableOpacity>
                 </View>
-            }
-        >
-            <View
-                style={{ flex: 1, backgroundColor: "rgba(255, 255, 255, 0.1)" }}
-            >
-                <ThemedView style={styles.titleContainer}>
-                    <View>
-                        <ThemedText type="title">Welcome !</ThemedText>
-                    </View>
-                    <HelloWave />
-                </ThemedView>
-                <View>
-                    <ThemedText>
-                        {" "}
-                        Sign up and never let them know your next move !{" "}
-                    </ThemedText>
+                <View style={styles.flipButtonContainer}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={toggleCameraFacing}
+                    >
+                        <Image
+                            style={styles.flipIcon}
+                            source={require("@/assets/images/flip.png")}
+                        />
+                    </TouchableOpacity>
                 </View>
-                <ThemedView style={styles.stepContainer}>
-                    <Button
-                        title="Sign up"
-                        onPress={() => navigation.navigate("SignUp")}
-                    />
-                    <Button
-                        title="Login"
-                        onPress={() => navigation.navigate("Login")}
-                    />
-                </ThemedView>
-            </View>
-        </ParallaxScrollView>
+                <View style={styles.avatarButtonContainer}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        // onPress={() => navigation.navigate("Profile")}
+                    >
+                        <Image
+                            style={styles.avatarIcon}
+                            source={require("@/assets/images/avatar.png")}
+                        />
+                    </TouchableOpacity>
+                </View>
+            </CameraView>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
-    titleContainer: {
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 8,
+    container: {
+        flex: 1,
+        justifyContent: "center",
     },
-    stepContainer: {
-        gap: 8,
-        marginBottom: 8,
-    }
+    camera: {
+        flex: 1,
+    },
+    flipButtonContainer: {
+        position: "absolute",
+        bottom: 25,
+        flexDirection: "row",
+        backgroundColor: "transparent",
+        left: 240,
+    },
+    lensButtonContainer: {
+        position: "absolute",
+        bottom: 5,
+        flexDirection: "row",
+        backgroundColor: "transparent",
+        right: 140,
+    },
+    avatarButtonContainer: {
+        position: "absolute",
+        bottom: 25,
+        flexDirection: "row",
+        backgroundColor: "transparent",
+        right: 20,
+    },
+    button: {
+        alignSelf: "flex-end",
+        alignItems: "center",
+    },
+    text: {
+        fontSize: 24,
+        fontWeight: "bold",
+        color: "white",
+    },
+    flipIcon: {
+        alignItems: "center",
+        justifyContent: "center",
+        width: 45,
+        height: 45,
+    },
+    lensIcon: {
+        alignItems: "center",
+        justifyContent: "center",
+        width: 100,
+        height: 100,
+    },
+    avatarIcon: {
+        alignItems: "center",
+        justifyContent: "center",
+        width: 60,
+        height: 60,
+    },
 });
