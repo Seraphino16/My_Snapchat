@@ -23,10 +23,10 @@ export default function ReceivedImagesPage() {
     })
     .then((response) => response.json())
     .then((data) => {
-      if (data.images) {
-        setImages(data.images);
+      if (data.id) {
+        setImages(data.id);
       } else {
-        console.error('data.images is undefined');
+        console.error(data);
 
       }
     })
