@@ -1,19 +1,14 @@
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useState } from "react";
-import {
-    Button,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-    Image,
-} from "react-native";
-import { FontAwesome5 } from '@expo/vector-icons';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { Link } from "expo-router";
+import useToken from "@/hooks/useToken";
 
 export default function HomeScreen() {
     const [facing, setFacing] = useState("back");
     const [permission, requestPermission] = useCameraPermissions();
+    const { deleteToken } = useToken();
 
     if (!permission) {
         return <View />;
@@ -48,36 +43,51 @@ export default function HomeScreen() {
                         />
                     </TouchableOpacity>
                 </View>
-                <View style={styles.flipButtonContainer}>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={toggleCameraFacing}
-                    >
-                        <Image
-                            style={styles.flipIcon}
-                            source={require("@/assets/images/flip.png")}
-                        />
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.avatarButtonContainer}>
-                    <TouchableOpacity
-                        style={styles.button}
-                        // onPress={() => navigation.navigate("Profile")}
-                    >
-                        <Image
-                            style={styles.avatarIcon}
-                            source={require("@/assets/images/avatar.png")}
-                        />
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.galleryButtonContainer}>
-                    <TouchableOpacity
-                        style={styles.button}
-                    >
-                        <Link href='/imagePickerPage'>
-                        <FontAwesome5 name='images' size={40} color={'black'} />
-                        </Link>
-                    </TouchableOpacity>
+                <View style={styles.buttonGroupContainer}>
+                    <View style={styles.logoutButtonContainer}>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={deleteToken}
+                        >
+                            <Image
+                                style={styles.logoutIcon}
+                                source={require("@/assets/images/logout.png")}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.avatarButtonContainer}>
+                        <TouchableOpacity
+                            style={styles.button}
+                            // onPress={() => navigation.navigate("Profile")}
+                        >
+                            <Image
+                                style={styles.avatarIcon}
+                                source={require("@/assets/images/avatar.png")}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.galleryButtonContainer}>
+                        <TouchableOpacity style={styles.button}>
+                            <Link href="/imagePickerPage">
+                                <FontAwesome5
+                                    name="images"
+                                    size={40}
+                                    color={"black"}
+                                />
+                            </Link>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.flipButtonContainer}>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={toggleCameraFacing}
+                        >
+                            <Image
+                                style={styles.flipIcon}
+                                source={require("@/assets/images/flip.png")}
+                            />
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </CameraView>
         </View>
@@ -92,37 +102,28 @@ const styles = StyleSheet.create({
     camera: {
         flex: 1,
     },
-    flipButtonContainer: {
-        position: "absolute",
-        top: 150,
-        flexDirection: "row",
-        backgroundColor: "transparent",
-        right: 32,
-    },
+    flipButtonContainer: {},
+    logoutButtonContainer: {},
     lensButtonContainer: {
         position: "absolute",
-        bottom: 5,
-        flexDirection: "row",
-        backgroundColor: "transparent",
+        left: 0,
         right: 140,
-    },
-    avatarButtonContainer: {
-        position: "absolute",
-        bottom: 25,
+        bottom: 0,
+        width: "100%",
+        height: 120,
         flexDirection: "row",
-        backgroundColor: "transparent",
-        right: 20,
+        backgroundColor: "rgba(255, 255, 255, 0.3)",
+        justifyContent: "center",
+        alignItems: "center",
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
     },
-    galleryButtonContainer: {
-        position: 'absolute',
-        flexDirection: 'row',
-        backgroundColor: 'transparent',
-        top: 80,
-        right: 32,
-    },
+    avatarButtonContainer: {},
+    galleryButtonContainer: {},
     button: {
         alignSelf: "flex-end",
         alignItems: "center",
+        opacity: 1,
     },
     text: {
         fontSize: 24,
@@ -132,8 +133,8 @@ const styles = StyleSheet.create({
     flipIcon: {
         alignItems: "center",
         justifyContent: "center",
-        width: 45,
-        height: 45,
+        width: 40,
+        height: 40,
     },
     lensIcon: {
         alignItems: "center",
@@ -141,10 +142,29 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
     },
+    buttonGroupContainer: {
+        position: "absolute",
+        flexDirection: "column",
+        backgroundColor: "rgba(255, 255, 255, 0.3)",
+        justifyContent: "space-evenly",
+        alignItems: "center",
+        top: 25,
+        right: 0,
+        borderBottomLeftRadius: 30,
+        padding: 10,
+        width: 70,
+        height: 300,
+    },
     avatarIcon: {
         alignItems: "center",
         justifyContent: "center",
-        width: 60,
-        height: 60,
+        width: 40,
+        height: 40,
+    },
+    logoutIcon: {
+        alignItems: "center",
+        justifyContent: "center",
+        width: 40,
+        height: 40,
     },
 });
