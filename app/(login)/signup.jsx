@@ -6,6 +6,7 @@ import logo from "../../assets/images/logosnap.png";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useRouter } from "expo-router";
+import useToken from "@/hooks/useToken";
 
 export default function SignUp() {
     const navigation = useNavigation();
@@ -18,6 +19,7 @@ export default function SignUp() {
     const bootstrapStyleSheet = new BootstrapStyleSheet();
     const { s, c } = bootstrapStyleSheet;
     const router = useRouter();
+    const { saveToken, fetchToken } = useToken();
 
     const handleSignUp = () => {
         fetch("https://snapchat.epidoc.eu/user", {
@@ -36,7 +38,9 @@ export default function SignUp() {
             .then((response) => response.json())
             .then((data) => {
                 if(data._id) {
-                    router.replace('(login)/login')
+                    fetchToken(email, password)
+                        .then(router.replace('(tabs)'));
+                    
                 }
                 console.log(data);
             })

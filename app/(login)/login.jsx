@@ -7,6 +7,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from "expo-router";
+import useToken from "@/hooks/useToken";
 
 
 export default function Login() {
@@ -16,6 +17,7 @@ export default function Login() {
     const bootstrapStyleSheet = new BootstrapStyleSheet();
     const { s, c } = bootstrapStyleSheet;
     const router = useRouter();
+    const { saveToken } = useToken();
 
     const handleLogin = () => {
         fetch("https://snapchat.epidoc.eu/user", {
@@ -35,8 +37,7 @@ export default function Login() {
                 try {
                     // Assure que le token est dans l'objet data
                     if(data.data.token) {
-                        await AsyncStorage.setItem('@token', data.data.token); 
-                        console.log('Connexion OK');
+                        saveToken(data.data.token);
                         router.replace('(tabs)');
                     } else {
                         console.log('Error with connexion');
