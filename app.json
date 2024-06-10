@@ -1,24 +1,44 @@
 {
   "expo": {
-    "name": "my_snapchat",
-    "slug": "my_snapchat",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/images/splashsplashcreen.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#FFFF00"
-    },
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+      "name": "my_snapchat",
+      "slug": "my_snapchat",
+      "version": "1.0.0",
+      "orientation": "portrait",
+      "icon": "./assets/images/icon.png",
+      "scheme": "myapp",
+      "userInterfaceStyle": "automatic",
+      "splash": {
+          "image": "./assets/images/splashsplashcreen.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#FFFF00"
+      },
+      "ios": {
+          "supportsTablet": true
+      },
+      "android": {
+          "adaptiveIcon": {
+              "foregroundImage": "./assets/images/adaptive-icon.png",
+              "backgroundColor": "#ffffff"
+          }
+      },
+      "web": {
+          "bundler": "metro",
+          "output": "static",
+          "favicon": "./assets/images/favicon.png"
+      },
+      "plugins": [
+          "expo-router",
+          [
+              "expo-camera",
+              {
+                  "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+                  "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+                  "recordAudioAndroid": true
+              }
+          ]
+      ],
+      "experiments": {
+          "typedRoutes": true
       }
     },
     "web": {
@@ -47,5 +67,4 @@
     "experiments": {
       "typedRoutes": true
     }
-  }
 }
