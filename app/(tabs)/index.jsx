@@ -74,7 +74,7 @@ export default function HomeScreen() {
                     <TouchableOpacity
                         style={styles.button}
                     >
-                        <Link href='/imagePickerPage.tsx'>
+                        <Link href='/imagePickerPage'>
                         <FontAwesome5 name='images' size={40} color={'black'} />
                         </Link>
                     </TouchableOpacity>
