@@ -1,5 +1,5 @@
-import { CameraView, useCameraPermissions } from "expo-camera";
-import { useState } from "react";
+import { Camera, CameraView, useCameraPermissions } from "expo-camera";
+import { useState, useRef } from "react";
 import {
     Button,
     StyleSheet,
@@ -14,6 +14,22 @@ import { Link } from "expo-router";
 export default function HomeScreen() {
     const [facing, setFacing] = useState("back");
     const [permission, requestPermission] = useCameraPermissions();
+    const [photo, setPhoto] = useState(null);
+    const cameraRef = useRef(null);
+
+    const getMimeType = (uri) => {
+        const format = uri.split('.').pop();
+        switch (format) {
+          case 'jpg':
+          case 'jpeg':
+            return 'image/jpeg';
+            break;
+          case 'png':
+            return 'image/png';
+          default:
+            return false;
+        }
+      }
 
     if (!permission) {
         return <View />;
@@ -34,13 +50,34 @@ export default function HomeScreen() {
         setFacing((current) => (current === "back" ? "front" : "back"));
     }
 
+    const takePhoto = async () => {
+        try {
+            if (cameraRef.current) {
+                let image = await cameraRef.current.takePictureAsync({ base64: true });
+
+                const mimeType = getMimeType(image.uri)
+                if (!mimeType) {
+                    throw new Error('Error with the image format');
+                }
+
+                image.base64 = `data:${mimeType};base64,${image.base64}`;
+
+                console.log(image.base64.substring(0, 50));
+                // console.log(image)
+                setPhoto(image)
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <View style={styles.container}>
-            <CameraView style={styles.camera} facing={facing}>
+            <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
                 <View style={styles.lensButtonContainer}>
                     <TouchableOpacity
                         style={styles.button}
-                        // onPress={}
+                        onPress={takePhoto}
                     >
                         <Image
                             style={styles.lensIcon}
