@@ -10,7 +10,9 @@ import {
     Pressable,
 } from "react-native";
 import { FontAwesome5 } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { Link, useNavigation } from "expo-router";
+import RNPickerSelect from 'react-native-picker-select';
 
 export default function HomeScreen() {
     const [facing, setFacing] = useState("back");
@@ -20,6 +22,19 @@ export default function HomeScreen() {
     const [isPressed, setIsPressed] = useState(false);
     const [selectedTime, setSelectedTime] = useState(5);
     const navigation = useNavigation();
+
+    const timeValues = [
+        { label: '1', value: 1 },
+        { label: '2', value: 2 },
+        { label: '3', value: 3 },
+        { label: '4', value: 4 },
+        { label: '5', value: 5 },
+        { label: '6', value: 6 },
+        { label: '7', value: 7 },
+        { label: '8', value: 8 },
+        { label: '9', value: 9 },
+        { label: '10', value: 10 }
+      ]    
 
     const getMimeType = (uri) => {
         const format = uri.split('.').pop();
@@ -99,6 +114,18 @@ export default function HomeScreen() {
                 >
                     <Text style={styles.buttonText}>Confirm</Text>
                 </Pressable>
+                </View>
+                <View style={styles.clockContainer} >
+                <RNPickerSelect
+                        onValueChange={(value) => setSelectedTime(value)}
+                        // style={styles.clockContainer}
+                        items={timeValues}
+                        darkTheme={true}
+                        placeholder={{}}
+                        value={selectedTime}
+                        >
+                        <Icon name='clock-o' size={40} color='black' />
+                    </RNPickerSelect>
                 </View>
             </View>
         )
@@ -189,6 +216,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         top: 80,
         right: 32,
+    },
+    clockContainer: {
+        position: 'absolute',
+        right: 32,
+        top: 80,
     },
     button: {
         alignSelf: "flex-end",
