@@ -8,6 +8,8 @@ import {
     View,
     Image,
 } from "react-native";
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Link } from "expo-router";
 
 export default function HomeScreen() {
     const [facing, setFacing] = useState("back");
@@ -68,6 +70,15 @@ export default function HomeScreen() {
                         />
                     </TouchableOpacity>
                 </View>
+                <View style={styles.galleryButtonContainer}>
+                    <TouchableOpacity
+                        style={styles.button}
+                    >
+                        <Link href='/imagePickerPage.tsx'>
+                        <FontAwesome5 name='images' size={40} color={'black'} />
+                        </Link>
+                    </TouchableOpacity>
+                </View>
             </CameraView>
         </View>
     );
@@ -83,10 +94,10 @@ const styles = StyleSheet.create({
     },
     flipButtonContainer: {
         position: "absolute",
-        bottom: 25,
+        top: 150,
         flexDirection: "row",
         backgroundColor: "transparent",
-        left: 240,
+        right: 32,
     },
     lensButtonContainer: {
         position: "absolute",
@@ -101,6 +112,13 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         backgroundColor: "transparent",
         right: 20,
+    },
+    galleryButtonContainer: {
+        position: 'absolute',
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+        top: 80,
+        right: 32,
     },
     button: {
         alignSelf: "flex-end",
