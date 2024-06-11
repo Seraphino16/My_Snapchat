@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View, FlatList, Image, Text } from 'react-native';
+import React, { memo, useEffect, useState } from 'react';
+import { StyleSheet, TouchableOpacity, View, FlatList, Image, Text, Pressable } from 'react-native';
 import { ThemedView } from '@/components/ThemedView';
 import useToken from '@/hooks/useToken';
 import { ThemedText } from '@/components/ThemedText';
 
-function SnapListItem ({ snap, token, onSelect }) {
+const SnapListItem =  memo(({ snap, token, onSelect }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -28,10 +28,6 @@ function SnapListItem ({ snap, token, onSelect }) {
   
     fetchUser();
     }, [snap]);
-
-  if(user) {
-    console.log(user);
-  }
 
   const handleClickSnap = async () => {
     setLoading(true);
@@ -77,7 +73,7 @@ function SnapListItem ({ snap, token, onSelect }) {
       
     </ThemedView>
   )
-}
+});
 
 
 export default function ReceivedImagesPage() {
@@ -85,6 +81,8 @@ export default function ReceivedImagesPage() {
   const {token} = useToken();
   const [photo, setPhoto] = useState(null);
   const [time, setTime] = useState(null);
+
+  console.log(snaps);
 
   useEffect(() => {
     
@@ -114,7 +112,14 @@ export default function ReceivedImagesPage() {
     if(photo && photo.duration) {
       setTime(photo.duration);
       timer = setInterval(() => {
-        setTime((prevTime) => prevTime - 1)
+        setTime((prevTime) => {
+          if (prevTime <= 1) {
+            clearInterval(timer);
+            setPhoto(null);
+            return 0
+          }
+          return prevTime - 1;
+        })
       }, 1000);
     }
 
@@ -122,19 +127,26 @@ export default function ReceivedImagesPage() {
   }, [photo])
 
   useEffect(()=> {
-    if (time === 0) {
+    if (time === 0 && photo) {
       setPhoto(null);
     }
   }, [time])
 
+  const handleImageClick = () => {
+    setPhoto(null);
+    setTime(0);
+  }
+
   if (photo) {
     return(
       <ThemedView>
-        <Image
-          source={{ uri: photo.image }}
-          style={styles.photo}
-          resizeMode='contain'
-        />
+        <Pressable onPress={handleImageClick}>
+          <Image
+            source={{ uri: photo.image }}
+            style={styles.photo}
+            resizeMode='contain'
+          />
+        </Pressable>
         <View style={styles.chronoContainer}>
           <Text style={styles.chrono}>{time}</Text>
         </View>
@@ -144,23 +156,24 @@ export default function ReceivedImagesPage() {
   }
 
   return(
-    <ThemedView>
+    <ThemedView style={{ flex: 1 }}>
       <ThemedView style={styles.header}>
         <ThemedText style={styles.title}>Chat</ThemedText>
       </ThemedView>
-      {/* {snaps && snaps.map((snap, index) => (
-        <SnapListItem snap={snap} key={index} token={token} />
-      ))} */}
       <FlatList
-                    data={snaps}
-                    renderItem={({ item: snap }) => (
-                        <SnapListItem 
-                            snap={snap}
-                            token={token}
-                            onSelect={setPhoto} />
-                    )}
-                    keyExtractor={snap => snap._id}
-                />
+          data={snaps}
+          renderItem={({ item: snap }) => (
+              <SnapListItem 
+                  snap={snap}
+                  token={token}
+                  onSelect={setPhoto} />
+          )}
+          keyExtractor={snap => {
+            console.log(snap._id)
+            return snap._id
+          }}
+          scrollToIndex={false}
+      />
     </ThemedView>
   );
 }
