@@ -36,7 +36,7 @@ export default function HomeScreen() {
                 </View>
             }
         >
-            <View
+            <ThemedView
                 style={{ flex: 1, backgroundColor: "rgba(255, 255, 255, 0.1)" }}
             >
                 <ThemedView style={styles.titleContainer}>
@@ -45,12 +45,12 @@ export default function HomeScreen() {
                     </View>
                     <HelloWave />
                 </ThemedView>
-                <View>
+                <ThemedView>
                     <ThemedText>
                         {" "}
                         Sign up and never let them know your next move !{" "}
                     </ThemedText>
-                </View>
+                </ThemedView>
                 <ThemedView style={styles.stepContainer}>
                     <Button
                         title="Sign up"
@@ -61,7 +61,7 @@ export default function HomeScreen() {
                         onPress={() => router.push("/login")}
                     />
                 </ThemedView>
-            </View>
+            </ThemedView>
         </ParallaxScrollView>
     );
 }
