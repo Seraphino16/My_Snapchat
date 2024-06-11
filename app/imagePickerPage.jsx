@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Image, View, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Link } from 'expo-router';
@@ -15,9 +15,13 @@ export default function ImagePickerExample() {
   const [selectedTime, setSelectedTime] = useState(5);
   const themeColor = useThemeColor({ light: 'black', dark: 'white'});
 
-  if(selectedTime) {
-    // console.log(selectedTime);
-}
+  useEffect(() => {
+    setImage(null);
+  }, []);
+
+  if(image) {
+    console.log(image.uri);
+  }
 
   const timeValues = [
     { label: '1', value: 1 },

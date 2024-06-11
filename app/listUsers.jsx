@@ -77,6 +77,8 @@ export default function ListUsers () {
         const str = image.base64.substring(0, 50);
         console.log(str);
 
+        console.log('Time: ', selectedTime);
+
         fetch('https://snapchat.epidoc.eu/snap', {
                 method: 'POST',
                 headers: {
