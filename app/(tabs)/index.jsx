@@ -76,7 +76,10 @@ export default function HomeScreen() {
     const takePhoto = async () => {
         try {
             if (cameraRef.current) {
-                let image = await cameraRef.current.takePictureAsync({ base64: true });
+                let image = await cameraRef.current.takePictureAsync({
+                    base64: true,
+                    quality: 0.5,
+                });
 
                 const mimeType = getMimeType(image.uri)
                 if (!mimeType) {
