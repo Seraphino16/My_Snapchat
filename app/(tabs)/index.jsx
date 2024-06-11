@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     },
     crossContainer: {
         position: 'absolute',
-        top: 100,
+        top: 80,
         left: 16,
         width: 60,
         height: 60, 
