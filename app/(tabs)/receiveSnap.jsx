@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View, FlatList, Image } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, FlatList, Image, Text } from 'react-native';
 import { ThemedView } from '@/components/ThemedView';
 import useToken from '@/hooks/useToken';
 import { ThemedText } from '@/components/ThemedText';
@@ -15,7 +15,7 @@ function SnapListItem ({ snap, token, onSelect }) {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNoYXJsZXMuZm90aWVAZXBpdGVjaC5ldSIsImlhdCI6MTcxNzc3ODc2NX0.Mmwlkue_haKhyXf_WGvkWLu2P2LxWHNHcUlA-6-ls2A', // Remplacez par votre clé API
+            'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNoYXJsZXMuZm90aWVAZXBpdGVjaC5ldSIsImlhdCI6MTcxNzc3ODc2NX0.Mmwlkue_haKhyXf_WGvkWLu2P2LxWHNHcUlA-6-ls2A',
             'authorization': 'bearer ' + token
           },
         })
@@ -40,7 +40,7 @@ function SnapListItem ({ snap, token, onSelect }) {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNoYXJsZXMuZm90aWVAZXBpdGVjaC5ldSIsImlhdCI6MTcxNzc3ODc2NX0.Mmwlkue_haKhyXf_WGvkWLu2P2LxWHNHcUlA-6-ls2A', // Remplacez par votre clé API
+          'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNoYXJsZXMuZm90aWVAZXBpdGVjaC5ldSIsImlhdCI6MTcxNzc3ODc2NX0.Mmwlkue_haKhyXf_WGvkWLu2P2LxWHNHcUlA-6-ls2A',
           'authorization': 'bearer ' + token
         }
       })
@@ -93,7 +93,7 @@ export default function ReceivedImagesPage() {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNoYXJsZXMuZm90aWVAZXBpdGVjaC5ldSIsImlhdCI6MTcxNzc3ODc2NX0.Mmwlkue_haKhyXf_WGvkWLu2P2LxWHNHcUlA-6-ls2A', // Remplacez par votre clé API
+        'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNoYXJsZXMuZm90aWVAZXBpdGVjaC5ldSIsImlhdCI6MTcxNzc3ODc2NX0.Mmwlkue_haKhyXf_WGvkWLu2P2LxWHNHcUlA-6-ls2A',
         'authorization': 'bearer ' + token
       },
     })
@@ -135,6 +135,9 @@ export default function ReceivedImagesPage() {
           style={styles.photo}
           resizeMode='contain'
         />
+        <View style={styles.chronoContainer}>
+          <Text style={styles.chrono}>{time}</Text>
+        </View>
 
       </ThemedView>
     )
@@ -160,7 +163,6 @@ export default function ReceivedImagesPage() {
                 />
     </ThemedView>
   );
-
 }
 
 const styles = StyleSheet.create({
@@ -196,5 +198,21 @@ const styles = StyleSheet.create({
   photo: {
     width: '100%',
     height: '100%',
+  },
+  chronoContainer: {
+    position: 'absolute',
+    top: 100,
+    right: 32,
+    zIndex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 40,
+    height: 40,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 20,
+  },
+  chrono: {
+    color: 'white'
   }
 })
