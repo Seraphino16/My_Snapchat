@@ -50,11 +50,11 @@ export default function SignUp() {
     };
 
     return (
-        <View style={[s.container, { justifyContent: "center", flex: 1 }]}>
+        <ThemedView style={[s.container, { justifyContent: "center", flex: 1 }]}>
           <ThemedView style={[styles.titleContainer, { backgroundColor: 'transparent' }]}>
-                <View>
+                <ThemedView>
                     <ThemedText type="title">Sign up !</ThemedText>
-                </View>
+                </ThemedView>
             </ThemedView>
             <View
                 style={[
@@ -68,7 +68,7 @@ export default function SignUp() {
             >
                 <Image source={logo} style={[{ width: 80, height: 80 }]} />
             </View>
-            <Text style={[s.text, { color: c.danger }]}>Username:</Text>
+            <ThemedText>Username:</ThemedText>
             <TextInput
                 style={[
                     s.border,
@@ -79,9 +79,9 @@ export default function SignUp() {
                 onChangeText={setUsername}
             />
 
-            <Text style={[s.text, s.mt4, { color: c.danger }]}>
+            <ThemedText>
                 Profile Picture:
-            </Text>
+            </ThemedText>
             <TextInput
                 style={[
                     s.border,
@@ -92,7 +92,7 @@ export default function SignUp() {
                 onChangeText={setProfilePicture}
             />
 
-            <Text style={[s.text, s.mt4, { color: c.danger }]}>Email:</Text>
+            <ThemedText>Email:</ThemedText>
             <TextInput
                 style={[
                     s.border,
@@ -103,7 +103,7 @@ export default function SignUp() {
                 onChangeText={setEmail}
             />
 
-            <Text style={[s.text, s.mt4, { color: c.danger }]}>Password:</Text>
+            <ThemedText>Password:</ThemedText>
             <TextInput
                 style={[
                     s.border,
@@ -118,8 +118,10 @@ export default function SignUp() {
             <View style={s.mt4}>
                 <Button title="SignUp" onPress={handleSignUp} />
             </View>
-            <Link style={styles.link} to='/(login)/login' >You don't have an account ? Sign up here</Link>
-        </View>
+            <Link style={styles.link} to='/(login)/login' >
+                <ThemedText>You don't have an account ? Sign up here</ThemedText>
+            </Link>
+        </ThemedView>
     );
 }
 

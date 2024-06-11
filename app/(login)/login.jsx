@@ -73,7 +73,7 @@ export default function Login() {
             >
                 <Image source={logo} style={[{ width: 80, height: 80 }]} />
             </View>
-            <Text style={[s.text, { color: c.danger }]}>Email:</Text>
+            <ThemedText >Email:</ThemedText>
             <TextInput
                 style={[
                     s.border,
@@ -84,7 +84,7 @@ export default function Login() {
                 onChangeText={setEmail}
             />
     
-            <Text style={[s.text, s.mt4, { color: c.danger }]}>Password:</Text>
+            <ThemedText >Password:</ThemedText>
             <TextInput
                 style={[
                     s.border,
@@ -99,7 +99,9 @@ export default function Login() {
             <View style={s.mt4}>
                 <Button title="Login" onPress={handleLogin} />
             </View>
-            <Link style={styles.link} to='/(login)/signup' >You don't have an account ? Sign up here</Link>
+            <Link style={styles.link} to='/(login)/signup' >
+                <ThemedText>You don't have an account ? Sign up here</ThemedText>
+            </Link>
         </View>
     );
 
