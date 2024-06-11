@@ -162,17 +162,6 @@ export default function HomeScreen() {
                             />
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.avatarButtonContainer}>
-                        <TouchableOpacity
-                            style={styles.button}
-                            // onPress={() => navigation.navigate("Profile")}
-                        >
-                            <Image
-                                style={styles.avatarIcon}
-                                source={require("@/assets/images/avatar.png")}
-                            />
-                        </TouchableOpacity>
-                    </View>
                     <View style={styles.galleryButtonContainer}>
                         <TouchableOpacity style={styles.button}>
                             <Link href="/imagePickerPage">
