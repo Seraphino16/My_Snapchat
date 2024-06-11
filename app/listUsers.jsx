@@ -29,7 +29,7 @@ function UserItem({ user, onSelect, isSelected }) {
 }
 
 export default function ListUsers() {
-    const [listUsers, setListUsers] = useState(null);
+    const [listUsers, setListUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
     const [isPressed, setIsPressed] = useState(false);
     const [searchValue, setSearchValue] = useState('');
