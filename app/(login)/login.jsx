@@ -113,5 +113,6 @@ export default function Login() {
         link: {
             textAlign: 'center',
             textDecorationLine: 'underline',
+            marginTop: 60,
         }
     });

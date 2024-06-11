@@ -255,7 +255,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   chrono: {
-    color: 'white'
+    color: 'white',
+    fontSize: 16,
   },
   message: {
     flex: 1,

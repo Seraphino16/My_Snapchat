@@ -132,5 +132,6 @@ const styles = StyleSheet.create({
   link: {
     textAlign: 'center',
     textDecorationLine: 'underline',
+    marginTop: 60,
   }
 });
