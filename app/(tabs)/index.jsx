@@ -126,7 +126,7 @@ export default function HomeScreen() {
                         placeholder={{}}
                         value={selectedTime}
                         >
-                        <Icon name='clock-o' size={40} color='black' />
+                        <Icon style={styles.clockIcon} name='clock-o' size={40} color='black' />
                     </RNPickerSelect>
                 </View>
                 <View style={styles.crossContainer} >
@@ -224,13 +224,27 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderRadius: 30,
     },
-
+    clockContainer: {
+        position: "absolute",
+        top: 100,
+        right: 32,
+        width: 60,
+        height: 60,
+        display: 'flex',
+        backgroundColor: "rgba(255, 255, 255, 0.3)",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 30,
+    },
+    clockIcon: {
+        marginLeft: 12,
+    },
     crossContainer: {
         position: 'absolute',
-        top: 80,
+        top: 100,
         left: 16,
-        width: 50,
-        height: 50, 
+        width: 60,
+        height: 60, 
         backgroundColor: "rgba(255, 255, 255, 0.3)",
         justifyContent: "center",
         alignItems: "center",
