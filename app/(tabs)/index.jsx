@@ -198,8 +198,6 @@ const styles = StyleSheet.create({
     camera: {
         flex: 1,
     },
-    flipButtonContainer: {},
-    logoutButtonContainer: {},
     lensButtonContainer: {
         position: "absolute",
         left: 0,
@@ -213,13 +211,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
-    },
-    galleryButtonContainer: {
-        position: 'absolute',
-        flexDirection: 'row',
-        backgroundColor: 'transparent',
-        top: 80,
-        right: 32,
     },
     clockContainer: {
         position: 'absolute',
