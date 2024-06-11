@@ -1,23 +1,22 @@
 import { useEffect, useState } from 'react';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
-import { FlatList, Image, StyleSheet, Pressable, Text } from 'react-native';
+import { FlatList, Image, StyleSheet, Pressable, Text, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useRoute } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import useToken from '@/hooks/useToken';
 
-function UserItem ({ user, onSelect, isSelected }) {
-
-    return(
+function UserItem({ user, onSelect, isSelected }) {
+    return (
         <Pressable onPress={() => onSelect(user)}>
-            <ThemedView style={styles.userItem} >
-                <ThemedView style={styles.userInfo}>            
+            <ThemedView style={styles.userItem}>
+                <ThemedView style={styles.userInfo}>
                     {user.profilePicture.length > 0 &&
                         <Image
-                        source={{ uri: user.profilePicture }}
-                        resizeMode='contain'
-                        style={styles.image} />
+                            source={{ uri: user.profilePicture }}
+                            resizeMode='contain'
+                            style={styles.image} />
                     }
                     <ThemedText>{user.username}</ThemedText>
                 </ThemedView>
@@ -26,30 +25,29 @@ function UserItem ({ user, onSelect, isSelected }) {
                 )}
             </ThemedView>
         </Pressable>
-    )
+    );
 }
 
-export default function ListUsers () {
-
+export default function ListUsers() {
     const [listUsers, setListUsers] = useState(null);
     const [selectedUser, setSelectedUser] = useState(null);
     const [isPressed, setIsPressed] = useState(false);
+    const [searchValue, setSearchValue] = useState('');
     const route = useRoute();
     const { image, selectedTime } = route.params;
     const router = useRouter();
     const { token } = useToken();
 
-    if(token) {
+    if (token) {
         console.log(token);
     }
 
-    if(image) {
+    if (image) {
         console.log(image.base64.substring(0, 50));
     }
 
     useEffect(() => {
-
-        if(token) {
+        if (token) {
             fetch('https://snapchat.epidoc.eu/user', {
                 method: 'get',
                 headers: {
@@ -58,41 +56,40 @@ export default function ListUsers () {
                     'authorization': 'bearer ' + token
                 }
             })
-            .then((response) => {
-                return response.json();
-            })
-            .then((data) => {
-                setListUsers(data.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    setListUsers(data.data);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         } else {
             console.log(token);
         }
     }, [token]);
 
     const handleSend = function () {
-
         const str = image.base64.substring(0, 50);
         console.log(str);
 
         console.log('Time: ', selectedTime);
 
         fetch('https://snapchat.epidoc.eu/snap', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlcmFwaGluLmJlbm9pdEBlcGl0ZWNoLmV1IiwiaWF0IjoxNzE3NzYzMDg5fQ.yVGQmbarWgv25YxWcwl01igKET7stSAfJ4eRvmaTvrU',
-                    'authorization': 'bearer ' + token
-                },
-                body: JSON.stringify({
-                    to: selectedUser._id,
-                    image: image.base64,
-                    duration: selectedTime,
-                })
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlcmFwaGluLmJlbm9pdEBlcGl0ZWNoLmV1IiwiaWF0IjoxNzE3NzYzMDg5fQ.yVGQmbarWgv25YxWcwl01igKET7stSAfJ4eRvmaTvrU',
+                'authorization': 'bearer ' + token
+            },
+            body: JSON.stringify({
+                to: selectedUser._id,
+                image: image.base64,
+                duration: selectedTime,
             })
-            .then((response) => { 
+        })
+            .then((response) => {
                 const contentType = response.headers.get('content-type');
 
                 if (contentType && contentType.includes('application/json')) {
@@ -100,30 +97,35 @@ export default function ListUsers () {
                 } else if (contentType && contentType.includes('text/html')) {
                     return response.text();
                 } else {
-                    throw new Error('ContentType  not supported');
+                    throw new Error('ContentType not supported');
                 }
-
-                
             })
             .then((data) => {
                 console.log(data);
-                if(data.success && data.success == true) {
+                if (data.success && data.success === true) {
                     router.replace('(tabs)');
                 }
             })
-            .catch((error) => { console.error(error) });
+            .catch((error) => { console.error(error); });
+    };
 
-    }
+    const filteredUsers = listUsers?.filter(user => user.username.includes(searchValue)) || [];
 
-    return(
+    return (
         <ThemedView styles={styles.container}>
+            <TextInput
+                value={searchValue}
+                onChangeText={setSearchValue}
+                placeholder="Search users..."
+                // Add any additional TextInput props here
+            />
             {!listUsers ? (
-            <ThemedText>See the console to see users</ThemedText>
+                <ThemedText>See the console to see users</ThemedText>
             ) : (
                 <FlatList
-                    data={listUsers}
+                    data={filteredUsers}
                     renderItem={({ item }) => (
-                        <UserItem 
+                        <UserItem
                             user={item}
                             onSelect={setSelectedUser}
                             isSelected={selectedUser?._id === item._id} />
@@ -131,7 +133,7 @@ export default function ListUsers () {
                     keyExtractor={item => item._id}
                 />
             )}
-            { selectedUser && (
+            {selectedUser && (
                 <Pressable
                     style={[styles.button, isPressed && styles.buttonPressed]}
                     onPressIn={() => setIsPressed(true)}
@@ -143,7 +145,7 @@ export default function ListUsers () {
                 </Pressable>
             )}
         </ThemedView>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -185,15 +187,15 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         transitionDuration: 200,
         transitionProperty: 'background-color',
-        transitoinTimingFunction: 'ease-in-out',
+        transitionTimingFunction: 'ease-in-out',
         display: 'flex',
         flexDirection: 'row',
     },
     buttonPressed: {
-        backgroundColor: '#1c9abd'
+        backgroundColor: '#1c9abd',
     },
     buttonText: {
         color: 'white',
         marginRight: 12,
-    }
-})
+    },
+});
