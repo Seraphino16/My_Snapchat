@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, FlatList, Image } from 'react-native';
 import { ThemedView } from '@/components/ThemedView';
 import useToken from '@/hooks/useToken';
 import { ThemedText } from '@/components/ThemedText';
 
-function SnapListItem ({ snap, token }) {
+function SnapListItem ({ snap, token, onSelect }) {
   const [user, setUser] = useState(null);
+  const [photo, setPhoto] = useState(null);
 
   useEffect(() => {
     async function fetchUser () {
@@ -32,10 +33,33 @@ function SnapListItem ({ snap, token }) {
     console.log(user);
   }
 
+  const handleClickSnap = async () => {
+    console.log(snap);
+    fetch(`https://snapchat.epidoc.eu/snap/${snap._id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNoYXJsZXMuZm90aWVAZXBpdGVjaC5ldSIsImlhdCI6MTcxNzc3ODc2NX0.Mmwlkue_haKhyXf_WGvkWLu2P2LxWHNHcUlA-6-ls2A', // Remplacez par votre clé API
+        'authorization': 'bearer ' + token
+      }
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      // console.log(data.data.duration);
+      setPhoto(data.data);
+    })
+  }
+
 
   return(
     <ThemedView style={styles.snapItemContainer}>
       {user && (
+        <TouchableOpacity onPress={() => {
+          handleClickSnap();
+          onSelect(photo);
+        }}>
         <ThemedView>
           <ThemedText>{user.username}</ThemedText>
           <ThemedView style={styles.newSnapContainer}>
@@ -43,6 +67,7 @@ function SnapListItem ({ snap, token }) {
             <ThemedText style={styles.redText}>Nouveau snap</ThemedText>
           </ThemedView>
         </ThemedView>
+        </TouchableOpacity>
       )}
       
     </ThemedView>
@@ -53,12 +78,12 @@ function SnapListItem ({ snap, token }) {
 export default function ReceivedImagesPage() {
   const [snaps, setSnaps] = useState(null);
   const {token} = useToken();
+  const [photo, setPhoto] = useState(null);
 
   useEffect(() => {
     
     if(token) {
       fetch('https://snapchat.epidoc.eu/snap', { 
-
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -75,14 +100,39 @@ export default function ReceivedImagesPage() {
     
   }, [token]);
 
+  if (photo) {
+
+    console.log(photo.duration);
+    return(
+      <ThemedView>
+        <Image
+          source={{ uri: photo.base64 }}
+          style={styles.photo}
+          resizeMode='contain'
+        />
+
+      </ThemedView>
+    )
+  }
+
   return(
     <ThemedView>
       <ThemedView style={styles.header}>
         <ThemedText style={styles.title}>Chat</ThemedText>
       </ThemedView>
-      {snaps && snaps.map((snap) => (
-        <SnapListItem snap={snap} token={token} />
-      ))}
+      {/* {snaps && snaps.map((snap, index) => (
+        <SnapListItem snap={snap} key={index} token={token} />
+      ))} */}
+      <FlatList
+                    data={snaps}
+                    renderItem={({ item: snap }) => (
+                        <SnapListItem 
+                            snap={snap}
+                            token={token}
+                            onSelect={setPhoto} />
+                    )}
+                    keyExtractor={snap => snap._id}
+                />
     </ThemedView>
   );
 
