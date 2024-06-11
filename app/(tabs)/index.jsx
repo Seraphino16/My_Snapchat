@@ -37,7 +37,6 @@ export default function HomeScreen() {
           case 'jpg':
           case 'jpeg':
             return 'image/jpeg';
-            break;
           case 'png':
             return 'image/png';
           default:
@@ -120,13 +119,12 @@ export default function HomeScreen() {
                 <View style={styles.clockContainer} >
                 <RNPickerSelect
                         onValueChange={(value) => setSelectedTime(value)}
-                        // style={styles.clockContainer}
                         items={timeValues}
                         darkTheme={true}
                         placeholder={{}}
                         value={selectedTime}
                         >
-                        <Icon name='clock-o' size={40} color='black' />
+                        <Icon style={styles.clockIcon} name='clock-o' size={40} color='black' />
                     </RNPickerSelect>
                 </View>
                 <View style={styles.crossContainer} >
@@ -242,6 +240,21 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 30,
+    },
+    clockContainer: {
+        position: 'absolute',
+        top: 80,
+        right: 16,
+        width: 60,
+        height: 60, 
+        display: 'flex',
+        backgroundColor: "rgba(255, 255, 255, 0.3)",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 30,
+    },
+    clockIcon: {
+        marginLeft: 12,
     },
     button: {
         alignSelf: "flex-end",

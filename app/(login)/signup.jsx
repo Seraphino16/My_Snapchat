@@ -79,19 +79,6 @@ export default function SignUp() {
                 onChangeText={setUsername}
             />
 
-            <ThemedText>
-                Profile Picture:
-            </ThemedText>
-            <TextInput
-                style={[
-                    s.border,
-                    s.p1,
-                    { minWidth: "80%", height: 40, backgroundColor: "white" },
-                ]}
-                value={profilePicture}
-                onChangeText={setProfilePicture}
-            />
-
             <ThemedText>Email:</ThemedText>
             <TextInput
                 style={[

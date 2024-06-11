@@ -42,10 +42,6 @@ export default function ListUsers() {
         console.log(token);
     }
 
-    if (image) {
-        console.log(image.base64.substring(0, 50));
-    }
-
     useEffect(() => {
         if (token) {
             fetch('https://snapchat.epidoc.eu/user', {
@@ -71,10 +67,6 @@ export default function ListUsers() {
     }, [token]);
 
     const handleSend = function () {
-        const str = image.base64.substring(0, 50);
-        console.log(str);
-
-        console.log('Time: ', selectedTime);
 
         fetch('https://snapchat.epidoc.eu/snap', {
             method: 'POST',
@@ -124,7 +116,7 @@ export default function ListUsers() {
                 // Add any additional TextInput props here
             />
             {!listUsers ? (
-                <ThemedText>See the console to see users</ThemedText>
+                <ThemedText>We didn't succed to find users</ThemedText>
             ) : (
                 <FlatList
                     data={filteredUsers}
