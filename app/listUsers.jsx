@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
-import { FlatList, Image, StyleSheet, Pressable, Text, TextInput } from 'react-native';
+import { FlatList, Image, StyleSheet, Pressable, Text, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useRoute } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
@@ -112,7 +112,11 @@ export default function ListUsers() {
     const filteredUsers = listUsers?.filter(user => user.username.includes(searchValue)) || [];
 
     return (
-        <ThemedView styles={styles.container}>
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Adjust behavior for iOS and Android
+        >
+        <ThemedView style={styles.container}>
             <TextInput
                 value={searchValue}
                 onChangeText={setSearchValue}
@@ -133,6 +137,8 @@ export default function ListUsers() {
                     keyExtractor={item => item._id}
                 />
             )}
+        </ThemedView>
+
             {selectedUser && (
                 <Pressable
                     style={[styles.button, isPressed && styles.buttonPressed]}
@@ -144,13 +150,13 @@ export default function ListUsers() {
                     <Icon name='paper-plane' size={20} color='white' />
                 </Pressable>
             )}
-        </ThemedView>
+        </KeyboardAvoidingView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        padding: 16,
+        flex: 1
     },
     image: {
         width: 40,
