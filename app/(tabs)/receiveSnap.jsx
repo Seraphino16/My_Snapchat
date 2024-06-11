@@ -6,7 +6,7 @@ import { ThemedText } from '@/components/ThemedText';
 
 function SnapListItem ({ snap, token, onSelect }) {
   const [user, setUser] = useState(null);
-  const [photo, setPhoto] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function fetchUser () {
@@ -34,37 +34,42 @@ function SnapListItem ({ snap, token, onSelect }) {
   }
 
   const handleClickSnap = async () => {
+    setLoading(true);
     console.log(snap);
-    fetch(`https://snapchat.epidoc.eu/snap/${snap._id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNoYXJsZXMuZm90aWVAZXBpdGVjaC5ldSIsImlhdCI6MTcxNzc3ODc2NX0.Mmwlkue_haKhyXf_WGvkWLu2P2LxWHNHcUlA-6-ls2A', // Remplacez par votre clé API
-        'authorization': 'bearer ' + token
-      }
-    })
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      // console.log(data.data.duration);
-      setPhoto(data.data);
-    })
+      fetch(`https://snapchat.epidoc.eu/snap/${snap._id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNoYXJsZXMuZm90aWVAZXBpdGVjaC5ldSIsImlhdCI6MTcxNzc3ODc2NX0.Mmwlkue_haKhyXf_WGvkWLu2P2LxWHNHcUlA-6-ls2A', // Remplacez par votre clé API
+          'authorization': 'bearer ' + token
+        }
+      })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        onSelect(data.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+      .finally(() => setLoading(false))
   }
 
 
   return(
     <ThemedView style={styles.snapItemContainer}>
       {user && (
-        <TouchableOpacity onPress={() => {
-          handleClickSnap();
-          onSelect(photo);
-        }}>
+        <TouchableOpacity 
+          onPress={() => { handleClickSnap() }}
+          disabled={ loading } >
         <ThemedView>
           <ThemedText>{user.username}</ThemedText>
           <ThemedView style={styles.newSnapContainer}>
             <View style={styles.square}></View>
-            <ThemedText style={styles.redText}>Nouveau snap</ThemedText>
+            <ThemedText style={styles.redText}>
+              {loading ? 'Chargement' : 'Nouveau  Snap' }
+            </ThemedText>
           </ThemedView>
         </ThemedView>
         </TouchableOpacity>
@@ -79,6 +84,7 @@ export default function ReceivedImagesPage() {
   const [snaps, setSnaps] = useState(null);
   const {token} = useToken();
   const [photo, setPhoto] = useState(null);
+  const [time, setTime] = useState(null);
 
   useEffect(() => {
     
@@ -100,13 +106,32 @@ export default function ReceivedImagesPage() {
     
   }, [token]);
 
-  if (photo) {
 
-    console.log(photo.duration);
+  useEffect(() => {
+
+    let timer;
+
+    if(photo && photo.duration) {
+      setTime(photo.duration);
+      timer = setInterval(() => {
+        setTime((prevTime) => prevTime - 1)
+      }, 1000);
+    }
+
+    return () => clearInterval(timer);
+  }, [photo])
+
+  useEffect(()=> {
+    if (time === 0) {
+      setPhoto(null);
+    }
+  }, [time])
+
+  if (photo) {
     return(
       <ThemedView>
         <Image
-          source={{ uri: photo.base64 }}
+          source={{ uri: photo.image }}
           style={styles.photo}
           resizeMode='contain'
         />
@@ -168,5 +193,8 @@ const styles = StyleSheet.create({
     color: 'red',
     marginLeft: 8,
   },
-
+  photo: {
+    width: '100%',
+    height: '100%',
+  }
 })
