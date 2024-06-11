@@ -131,15 +131,17 @@ export default function Login() {
             </View>
         </KeyboardAvoidingView>
     );
-}
-const styles = StyleSheet.create({
-    titleContainer: {
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 8,
-    },
-    link: {
-        textAlign: "center",
-        textDecorationLine: "underline",
-    },
-});
+
+    }
+    const styles = StyleSheet.create({
+        titleContainer: {
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 8,
+        },
+        link: {
+            textAlign: 'center',
+            textDecorationLine: 'underline',
+            marginTop: 60,
+        }
+    });

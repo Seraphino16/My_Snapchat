@@ -161,13 +161,14 @@ export default function SignUp() {
 }
 
 const styles = StyleSheet.create({
-    titleContainer: {
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 8,
-    },
-    link: {
-        textAlign: "center",
-        textDecorationLine: "underline",
-    },
+  titleContainer: {
+      flexDirection: "column",
+      alignItems: "center",
+      gap: 8,
+  },
+  link: {
+    textAlign: 'center',
+    textDecorationLine: 'underline',
+    marginTop: 60,
+  }
 });

@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Link, useNavigation } from "expo-router";
 import RNPickerSelect from 'react-native-picker-select';
 import useToken from "@/hooks/useToken";
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function HomeScreen() {
     const [facing, setFacing] = useState("back");
@@ -44,6 +45,10 @@ export default function HomeScreen() {
         }
     }
 
+    const deletePhoto = () => {
+        setPhoto(null);
+    }
+
     const navigateToListUsers = () => {
         const image = photo;
         navigation.navigate('listUsers', { image, selectedTime });
@@ -71,7 +76,10 @@ export default function HomeScreen() {
     const takePhoto = async () => {
         try {
             if (cameraRef.current) {
-                let image = await cameraRef.current.takePictureAsync({ base64: true });
+                let image = await cameraRef.current.takePictureAsync({
+                    base64: true,
+                    quality: 0.5,
+                });
 
                 const mimeType = getMimeType(image.uri)
                 if (!mimeType) {
@@ -120,6 +128,11 @@ export default function HomeScreen() {
                         >
                         <Icon name='clock-o' size={40} color='black' />
                     </RNPickerSelect>
+                </View>
+                <View style={styles.crossContainer} >
+                    <TouchableOpacity onPress={deletePhoto}>
+                        <Ionicons name='close-outline' size={40} color='black' />
+                    </TouchableOpacity>
                 </View>
             </View>
         )
@@ -200,22 +213,28 @@ const styles = StyleSheet.create({
     },
     lensButtonContainer: {
         position: "absolute",
-        left: 0,
-        right: 140,
-        bottom: 0,
-        width: "100%",
-        height: 120,
-        flexDirection: "row",
+        left: '50%',
+        transform: [{ translateX: -50 }],
+        bottom: 8,
+        width: 100,
+        height: 100,
+        display: 'flex',
         backgroundColor: "rgba(255, 255, 255, 0.3)",
         justifyContent: "center",
         alignItems: "center",
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
+        borderRadius: 30,
     },
-    clockContainer: {
+
+    crossContainer: {
         position: 'absolute',
-        right: 32,
         top: 80,
+        left: 16,
+        width: 50,
+        height: 50, 
+        backgroundColor: "rgba(255, 255, 255, 0.3)",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 30,
     },
     button: {
         alignSelf: "flex-end",
