@@ -31,7 +31,6 @@ const SnapListItem =  memo(({ snap, token, onSelect }) => {
 
   const handleClickSnap = async () => {
     setLoading(true);
-    console.log(snap);
       fetch(`https://snapchat.epidoc.eu/snap/${snap._id}`, {
         method: 'GET',
         headers: {
@@ -82,8 +81,6 @@ export default function ReceivedImagesPage() {
   const [photo, setPhoto] = useState(null);
   const [time, setTime] = useState(null);
 
-  console.log(snaps);
-
   useEffect(() => {
     
     if(token) {
@@ -115,7 +112,6 @@ export default function ReceivedImagesPage() {
         setTime((prevTime) => {
           if (prevTime <= 1) {
             clearInterval(timer);
-            setPhoto(null);
             return 0
           }
           return prevTime - 1;
@@ -128,12 +124,41 @@ export default function ReceivedImagesPage() {
 
   useEffect(()=> {
     if (time === 0 && photo) {
+
+      fetch(`https://snapchat.epidoc.eu/snap/seen/${photo._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNoYXJsZXMuZm90aWVAZXBpdGVjaC5ldSIsImlhdCI6MTcxNzc3ODc2NX0.Mmwlkue_haKhyXf_WGvkWLu2P2LxWHNHcUlA-6-ls2A',
+          'authorization': 'bearer ' + token
+        },
+      })
+      .then((response) => {
+
+        const contentType = response.headers.get('content-type');
+
+          if (contentType && contentType.includes('application/json')) {
+            return response.json();
+          } else {
+              throw new Error('ContentType  not supported');
+          }
+
+      })
+      .then((data) => {
+        if (data.success === true) {
+          console.log(data);
+        } else {
+          throw new Error(data.data);
+        }
+      })
+      .catch((error) => console.error(error));
+
+      setSnaps(snaps => snaps.filter(snap => snap._id !== photo._id));
       setPhoto(null);
     }
   }, [time])
 
   const handleImageClick = () => {
-    setPhoto(null);
     setTime(0);
   }
 
@@ -160,20 +185,24 @@ export default function ReceivedImagesPage() {
       <ThemedView style={styles.header}>
         <ThemedText style={styles.title}>Chat</ThemedText>
       </ThemedView>
-      <FlatList
-          data={snaps}
-          renderItem={({ item: snap }) => (
-              <SnapListItem 
-                  snap={snap}
-                  token={token}
-                  onSelect={setPhoto} />
-          )}
-          keyExtractor={snap => {
-            console.log(snap._id)
-            return snap._id
-          }}
-          scrollToIndex={false}
-      />
+      {(!snaps || snaps.length === 0) ? (
+        <ThemedView style={styles.message}>
+          <ThemedText>There is nothing to see.</ThemedText>
+          <ThemedText>You can send snaps to your friends !</ThemedText>
+        </ThemedView>
+      ) : (
+        <FlatList
+            data={snaps}
+            renderItem={({ item: snap }) => (
+                <SnapListItem 
+                    snap={snap}
+                    token={token}
+                    onSelect={setPhoto} />
+            )}
+            keyExtractor={snap => snap._id}
+            scrollToIndex={false}
+          />
+      )}
     </ThemedView>
   );
 }
@@ -227,5 +256,11 @@ const styles = StyleSheet.create({
   },
   chrono: {
     color: 'white'
+  },
+  message: {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 })
