@@ -1,3 +1,9 @@
+# My_Snapchat
+
+This application was created with React Native and Expo Go.
+This replicate Snapchat functionalities like take a picture and send it to your friends.
+
+
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
