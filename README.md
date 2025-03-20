@@ -1,10 +1,17 @@
 # My_Snapchat
 
+## Description
+
+My_Snapchat is a mobile application made for a school project.
+The goal was to replicate the real  Snapchat application whith features such as :
+   - add your friends
+   - send temporary photos to them
+   - receive snaps
+
+
 This application was created with React Native and Expo Go.
-This replicate Snapchat functionalities like take a picture and send it to your friends.
 
-
-An API was provided and it might be infunctionnal.
+An API was provided for the time of the project so it might be not functionnal.
 
 
 # Welcome to your Expo app 👋
